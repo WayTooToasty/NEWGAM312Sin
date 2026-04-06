@@ -35,7 +35,11 @@ void APlayerChar::BeginPlay()
 	FTimerHandle StatusTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(StatusTimerHandle, this, &APlayerChar::DecreaseStatus, 2.0f, true);
 
-
+	if (objWidget)
+	{
+		objWidget->UpdatebuildObj(0.0f);
+		objWidget->UpdatematObj(0.0f);
+	}
 }
 
 // Called every frame
@@ -126,6 +130,10 @@ void APlayerChar::FindObject()
 					{
 						GiveResource(resourceValue, hitName);
 
+						matsCollected = matsCollected + resourceValue;
+
+						objWidget->UpdatematObj(matsCollected);
+
 						check(GEngine != nullptr);
 						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected"));
 
@@ -152,6 +160,9 @@ void APlayerChar::FindObject()
 	else
 	{
 		isBuilding = false;
+		objectsBuilt = objectsBuilt + 1.0f;
+
+		objWidget->UpdatebuildObj(objectsBuilt);
 	
 	}
 
